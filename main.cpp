@@ -8,54 +8,72 @@
 
 
 int main() {
-    // 1. 準備實驗數據 (Ic vs hFE)
+    std::cout << "===============================================" << std::endl;
+    std::cout << "   數值分析系統：BJT hFE 特性曲線模擬測試      " << std::endl;
+    std::cout << "===============================================" << std::endl;
+
+    // 1. 準備實驗數據 (DataSet)
+    // 數據點：(0.1, 40), (1.0, 80), (10.0, 120)
     DataSet hfeData(
-        1.0,
-        { 0.1, 1.0, 10.0 },
-        { 40.0, 80.0, 120.0 },
-        "BJT hFE Test Data"
+        1.0,                       // Vce = 1V
+        { 0.1, 1.0, 10.0 },        // Ic (mA)
+        { 40.0, 80.0, 120.0 },     // hFE
+        "BJT Ta=25C Vce=1V"        // 描述
     );
 
-    // 設定繪圖參數：在數據有效的 0.1 ~ 10.0 區間內產生 100 個採樣點
+    // 2. 設定繪圖範圍與參數 (嚴格遵守 0.1~10.0 區間，拒絕外推瞎猜)
     double xMin = 0.1;
     double xMax = 10.0;
-    int points = 100;
+    int samplePoints = 100;    // 產生 100 個插值點讓曲線更滑順
 
-    std::cout << "開始計算並匯出曲線數據..." << std::endl;
+    // 3. 定義要測試的方法列表與對應的檔案前綴
+    struct TestConfig {
+        InterpolationMethod method;
+        std::string name;
+        std::string filePrefix;
+    };
 
-    // ==========================================
-    // 2. 處理 Lagrange 插值 (會震盪、有大肚子的拋物線)
-    // ==========================================
-    auto lagrangeCurve = Interpolation::generateCurve(hfeData, xMin, xMax, points, InterpolationMethod::Lagrange);
+    std::vector<TestConfig> configs = {
+        { InterpolationMethod::Linear,      "線性插值 (Linear)",   "hFE_Linear_" },
+        { InterpolationMethod::Lagrange,    "拉格朗日 (Lagrange)", "hFE_Lagrange_" },
+        { InterpolationMethod::CubicSpline, "三次樣條 (Spline)",   "hFE_Spline_" },
+        { InterpolationMethod::PCHIP,       "單調三次 (PCHIP)",    "hFE_PCHIP_" }
+    };
 
-    // 檔名：hFE_Lagrange_YYYYMMDD_HHMMSS.csv
-    std::string lagrangeFilename = File_save::generateTimestampFilename("hFE_Lagrange_", ".csv");
+    // 4. 執行批量計算與檔案匯出
+    for (const auto& config : configs) {
+        std::cout << "\n正在處理 " << config.name << "..." << std::endl;
 
-    if (CurveExporter::toCSV(lagrangeCurve, lagrangeFilename, "Ic(mA)", "hFE")) {
-        std::cout << "[成功] Lagrange 數據已儲存至: " << lagrangeFilename << std::endl;
+        // A. 批量產生曲線點
+        auto curve = Interpolation::generateCurve(hfeData, xMin, xMax, samplePoints, config.method);
+
+        // B. 產生具備時間戳記的檔案名稱
+        std::string filename = File_save::generateTimestampFilename(config.filePrefix, ".csv");
+
+        // C. 匯出為 CSV (使用你之前寫好的 CurveExporter)
+        if (CurveExporter::toCSV(curve, filename, "Ic(mA)", "hFE")) {
+            std::cout << "   -> [成功] 檔案已儲存至: " << filename << std::endl;
+        }
+        else {
+            std::cout << "   -> [失敗] 無法寫入檔案: " << filename << std::endl;
+        }
     }
 
-    // ==========================================
-    // 3. 處理 Linear 插值 (連直線、絕對穩定的折線)
-    // ==========================================
-    auto linearCurve = Interpolation::generateCurve(hfeData, xMin, xMax, points, InterpolationMethod::Linear);
+    // 5. 展示「單點求座標」的功能 (使用者最核心的需求)
+    std::cout << "\n===============================================" << std::endl;
+    std::cout << "   特定座標計算驗證 (當 Ic = 5.0 mA 時)        " << std::endl;
+    std::cout << "===============================================" << std::endl;
 
-    // 檔名：hFE_Linear_YYYYMMDD_HHMMSS.csv
-    std::string linearFilename = File_save::generateTimestampFilename("hFE_Linear_", ".csv");
-
-    if (CurveExporter::toCSV(linearCurve, linearFilename, "Ic(mA)", "hFE")) {
-        std::cout << "[成功] Linear   數據已儲存至: " << linearFilename << std::endl;
-    }
-
-    // ==========================================
-    // 4. 單點驗證 (不存檔，僅在終端機顯示座標)
-    // ==========================================
     double testIc = 5.0;
-    std::cout << "\n--- 單點座標驗證 (Ic = 5.0 mA) ---" << std::endl;
-    std::cout << "Lagrange 求得 y = " << Interpolation::lagrange(hfeData.X, hfeData.Y, testIc) << std::endl;
-    std::cout << "Linear   求得 y = " << Interpolation::lerp(hfeData.X, hfeData.Y, testIc) << std::endl;
+    std::cout << std::fixed << std::setprecision(4);
 
-    std::cout << "\n處理完成。你可以用 Excel 開啟這兩個 CSV 檔案來比較差異。" << std::endl;
+    // 直接呼叫 Public 演算法函式求 Y
+    std::cout << "Linear   求得 hFE: " << Interpolation::lerp(hfeData.X, hfeData.Y, testIc) << " (預期 97.7 左右)" << std::endl;
+    std::cout << "Lagrange 求得 hFE: " << Interpolation::lagrange(hfeData.X, hfeData.Y, testIc) << " (預期震盪過衝)" << std::endl;
+    std::cout << "Spline   求得 hFE: " << Interpolation::spline(hfeData.X, hfeData.Y, testIc) << " (極度平滑)" << std::endl;
+    std::cout << "PCHIP    求得 hFE: " << Interpolation::pchip(hfeData.X, hfeData.Y, testIc) << " (保證單調且平滑)" << std::endl;
+
+    std::cout << "\n測試完成。請查看當前資料夾下的 CSV 檔案並使用 Excel 繪圖比較。" << std::endl;
 
     return 0;
 }

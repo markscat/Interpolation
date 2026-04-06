@@ -160,8 +160,137 @@ double Interpolation::lerp(const std::vector<double>& x_v, const std::vector<dou
 }
 
 // spline 和 pchip 先留空標記，等到要實作時再補內容即可
-double Interpolation::spline(const std::vector<double>& x, const std::vector<double>& y, double tx) { return 0.0; }
-double Interpolation::pchip(const std::vector<double>& x, const std::vector<double>& y, double tx) { return 0.0; }
+double Interpolation::spline(const std::vector<double>& x, const std::vector<double>& y, double tx) { 
+    size_t n = x.size();
+    // 樣條插值至少需要 3 個點，若點數不足則退回線性插值
+    if (n < 3) return lerp(x, y, tx);
+
+    // 1. 計算步長 h
+    std::vector<double> h(n - 1);
+    for (size_t i = 0; i < n - 1; ++i) {
+        h[i] = x[i + 1] - x[i];
+        if (h[i] < 1e-12) return y[i]; // 防止重複點
+    }
+
+    // 2. 建立三對角矩陣 (Thomas Algorithm 用)
+    // 矩陣結構: [A] * [M] = [B]
+    // M 是二階導數 (Moments)
+    std::vector<double> a(n), b(n), c(n), d(n);
+
+    // 自然邊界條件: M[0] = M[n-1] = 0
+    b[0] = 1.0; c[0] = 0.0; d[0] = 0.0;
+    b[n - 1] = 1.0; a[n - 1] = 0.0; d[n - 1] = 0.0;
+
+    for (size_t i = 1; i < n - 1; ++i) {
+        a[i] = h[i - 1];
+        b[i] = 2.0 * (h[i - 1] + h[i]);
+        c[i] = h[i];
+        d[i] = 6.0 * ((y[i + 1] - y[i]) / h[i] - (y[i] - y[i - 1]) / h[i - 1]);
+    }
+
+    // 3. 解三對角矩陣 (追趕法)
+    std::vector<double> m(n); // 二階導數解
+    for (size_t i = 1; i < n; ++i) {
+        double m_factor = a[i] / b[i - 1];
+        b[i] = b[i] - m_factor * c[i - 1];
+        d[i] = d[i] - m_factor * d[i - 1];
+    }
+
+    m[n - 1] = d[n - 1] / b[n - 1];
+    for (int i = n - 2; i >= 0; --i) {
+        m[i] = (d[i] - c[i] * m[i + 1]) / b[i];
+    }
+
+    // 4. 尋找 tx 所在的區間
+    size_t idx = 0;
+    if (tx <= x[0]) return y[0];
+    if (tx >= x[n - 1]) return y[n - 1];
+
+    for (size_t i = 0; i < n - 1; ++i) {
+        if (tx >= x[i] && tx <= x[i + 1]) {
+            idx = i;
+            break;
+        }
+    }
+
+    // 5. 使用樣條公式計算 y
+    double dx = tx - x[idx];
+    double h_idx = h[idx];
+
+    // 三次樣條標準公式
+    double term1 = m[idx] * std::pow(x[idx + 1] - tx, 3) / (6.0 * h_idx);
+    double term2 = m[idx + 1] * std::pow(dx, 3) / (6.0 * h_idx);
+    double term3 = (y[idx] - m[idx] * h_idx * h_idx / 6.0) * (x[idx + 1] - tx) / h_idx;
+    double term4 = (y[idx + 1] - m[idx + 1] * h_idx * h_idx / 6.0) * dx / h_idx;
+
+    return term1 + term2 + term3 + term4;
+}
+
+double Interpolation::pchip(const std::vector<double>& x, const std::vector<double>& y, double tx) {
+    size_t n = x.size();
+    if (n < 2) return 0.0;
+    if (n == 2) return lerp(x, y, tx); // 兩個點只能連直線
+
+    // 1. 計算各段的步長 (h) 與斜率 (d)
+    std::vector<double> h(n - 1);
+    std::vector<double> d(n - 1);
+    for (size_t i = 0; i < n - 1; ++i) {
+        h[i] = x[i + 1] - x[i]; 
+        if (h[i] < 1e-12) return y[i]; // 防止重複點
+        d[i] = (y[i + 1] - y[i]) / h[i];
+    }
+
+    // 2. 計算每個數據點上的導數 (m) —— 這是 PCHIP 的靈魂
+    std::vector<double> m(n);
+
+    // 內部點的導數計算 (使用加權諧波平均)
+    for (size_t i = 1; i < n - 1; ++i) {
+        if (d[i - 1] * d[i] > 0) {
+            // 如果兩邊斜率同號，使用加權諧波平均
+            double w1 = 2.0 * h[i] + h[i - 1];
+            double w2 = h[i] + 2.0 * h[i - 1];
+            m[i] = (w1 + w2) / (w1 / d[i - 1] + w2 / d[i]);
+        }
+        else {
+            // 如果斜率異號，說明是極值點，導數強制設為 0 (防止震盪)
+            m[i] = 0.0;
+        }
+    }
+
+    // 端點的導數處理 (非中心差分)
+    m[0] = ((2.0 * h[0] + h[1]) * d[0] - h[0] * d[1]) / (h[0] + h[1]);
+    if (m[0] * d[0] < 0) m[0] = 0.0; // 修正端點震盪
+    else if ((d[0] * d[1] < 0) && (std::abs(m[0]) > std::abs(3.0 * d[0]))) m[0] = 3.0 * d[0];
+
+    m[n - 1] = ((2.0 * h[n - 2] + h[n - 3]) * d[n - 2] - h[n - 2] * d[n - 3]) / (h[n - 2] + h[n - 3]);
+    if (m[n - 1] * d[n - 2] < 0) m[n - 1] = 0.0;
+    else if ((d[n - 2] * d[n - 3] < 0) && (std::abs(m[n - 1]) > std::abs(3.0 * d[n - 2]))) m[n - 1] = 3.0 * d[n - 2];
+
+    // 3. 尋找 tx 所在的區間
+    if (tx <= x[0]) return y[0];
+    if (tx >= x[n - 1]) return y[n - 1];
+
+    size_t i = 0;
+    for (size_t k = 0; k < n - 1; ++k) {
+        if (tx >= x[k] && tx <= x[k + 1]) {
+            i = k;
+            break;
+        }
+    }
+
+    // 4. Hermite 三次插值多項式
+    double t = (tx - x[i]) / h[i];
+    double t2 = t * t;
+    double t3 = t * t * t;
+
+    // 使用 Hermite 基底函數
+    double h00 = 2 * t3 - 3 * t2 + 1;
+    double h10 = t3 - 2 * t2 + t;
+    double h01 = -2 * t3 + 3 * t2;
+    double h11 = t3 - t2;
+
+    return h00 * y[i] + h10 * h[i] * m[i] + h01 * y[i + 1] + h11 * h[i] * m[i + 1];
+}
 
 std::vector<std::vector<Point>> Interpolation::generateMultiCurves(
     const std::vector<DataSet>& datasets,
