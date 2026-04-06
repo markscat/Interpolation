@@ -1,8 +1,7 @@
 # 數值分析插值工具箱 (Numerical Interpolation Toolbox)
 
-本專案提供了一套高獨立性、隨插即用的 C++ 插值演算法類別 `Interpolation.cpp`。專為工程數據模擬與物理特性曲線（如 BJT 的 $h_{FE}$ 特性）設計，解決了傳統插值法在數據跨度大時容易產生的震盪問題。
-這個專案算是已經完成了;但我不會關閉這個程式.或許以後需要增加什麼
-如果這個專案被關成唯讀,那我可能已經住院等死了吧.
+本專案提供了一套高獨立性、隨插即用的 C++ 插值演算法類別 `Interpolation.cpp`。專為工程數據模擬與物理特性曲線（如 BJT 的 $h_{FE}$ 特性）設計，解決了傳統插值法在數據跨度大時容易產生的震盪問題。<br>
+
 ---
 
 ## 支援演算法說明 (Mathematical Background)
@@ -79,7 +78,9 @@ double y = Interpolation::pchip(myData.X, myData.Y, 5.0);
 auto curve = Interpolation::generateCurve(myData, 0.1, 10.0, 100, InterpolationMethod::PCHIP);
 ```
 
-如果有任何疑問,或是我的演算法哪邊有問題,煩請和我聯絡
+這個專案算是已經完成了;但我不會關閉這個程式.或許以後需要增加什麼<br>
+如果這個專案被關成唯讀,那我可能已經住院等死了吧.<br>
+如果有任何疑問,或是我的演算法哪邊有問題,煩請和我聯絡<br>
 markscar@gmail.com
 
 # Numerical Interpolation Toolbox (C++)
@@ -169,6 +170,9 @@ double y = Interpolation::pchip(myData.X, myData.Y, 5.0);
 // 3. Generate a smooth curve for plotting (100 sample points)
 auto curve = Interpolation::generateCurve(myData, 0.1, 10.0, 100, InterpolationMethod::PCHIP);
 ```
-If you have any questions, or if there is a problem with my algorithm, please contact me.
+
+This project is essentially complete; however, I won't shut it down. Perhaps something will need to be added later.<br>
+If this project were shut down to read-only mode, I'd probably be hospitalized and waiting to die by now.<br>
+If you have any questions, or if there is a problem with my algorithm, please contact me.<br>
 markscar@gmail.com
 
