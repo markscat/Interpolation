@@ -167,3 +167,5 @@ double y = Interpolation::pchip(myData.X, myData.Y, 5.0);
 
 // 3. Generate a smooth curve for plotting (100 sample points)
 auto curve = Interpolation::generateCurve(myData, 0.1, 10.0, 100, InterpolationMethod::PCHIP);
+```
+If you have any questions, or if there is a problem with my algorithm, please contact me.
