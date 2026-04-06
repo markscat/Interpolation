@@ -1,32 +1,29 @@
-# Prerequisites
-*.d
+# Qt Creator 相關
+*.user
+*.user.*
+.qtc_clangd/
+.qtc_clangd/*
+.qtcreator/
+.qtcreator/*
 
-# Compiled Object files
-*.slo
-*.lo
+# 建置目錄（根據你的專案結構）
+build/
+build-*/
+*-build-*
+
+# CMake 產生的
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+
+# 如果你的 build 資料夾在專案根目錄
+/MOSandBJT-build-*/
+/build/
+
+# 編譯中間檔（你已經有的一些）
 *.o
 *.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
 *.exe
-*.out
-*.app
