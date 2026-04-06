@@ -9,6 +9,7 @@
 # 建置目錄（根據你的專案結構）
 build/
 build-*/
+.vs/
 *-build-*
 
 # CMake 產生的
@@ -27,3 +28,5 @@ Makefile
 *.o
 *.obj
 *.exe
+*.csv
+*.ods
