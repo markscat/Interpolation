@@ -78,6 +78,9 @@ double y = Interpolation::pchip(myData.X, myData.Y, 5.0);
 auto curve = Interpolation::generateCurve(myData, 0.1, 10.0, 100, InterpolationMethod::PCHIP);
 ```
 
+如果有任何疑問,或是我的演算法哪邊有問題,煩請和我聯絡
+markscar@gmail.com
+
 # Numerical Interpolation Toolbox (C++)
 
 A high-portability, standalone C++ library for numerical interpolation. This toolbox is designed specifically for engineering data simulation and physical characteristic modeling (such as Transistor $h_{FE}$ curves). It effectively eliminates the "overshoot" issues commonly found in traditional interpolation methods when dealing with non-uniform data.
