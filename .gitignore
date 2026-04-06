@@ -23,7 +23,7 @@ Makefile
 *.cmake
 
 # 如果你的 build 資料夾在專案根目錄
-/MOSandBJT-build-*/
+/Interpolation-*/
 /build/
 
 # 編譯中間檔（你已經有的一些）
