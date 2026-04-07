@@ -127,12 +127,14 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\cauver\curveexporter.cpp" />
     <ClCompile Include="src\File\File_save.cpp" />
+    <ClCompile Include="src\Infinitesimalrechnung.cpp" />
     <ClCompile Include="src\Interpolation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cauver\cauverdrawable.h" />
     <ClInclude Include="include\cauver\curveexporter.h" />
     <ClInclude Include="include\File\File_save.h" />
+    <ClInclude Include="include\Infinitesimalrechnung.h" />
     <ClInclude Include="include\Interpolation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
