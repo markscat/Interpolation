@@ -36,6 +36,13 @@ struct DataSet {
     }
 };
 
+/** 
+* @brief Interpolation 類別：提供多種插值方法的實作
+ * 這個類別包含了多種插值方法的實作，並且提供了從數據集產生插值曲線的功能。
+ * 你可以根據需要選擇不同的插值方法來生成更平滑或更適合電子元件特性的曲線。
+ * @details 目前已經實作了 Lagrange 和 Linear 插值方法，Cubic Spline 和 PCHIP 的實作將在後續完成。
+ *  這些方法都接受一組已知的數據點，並且能夠對任意目標 x 值進行插值計算。
+ */
 class Interpolation {
 
 public:
@@ -47,10 +54,38 @@ public:
         double x_target);
 
 
-
+    /**
+	* @brief 線性插值法 (單點)
+	* @param x 已知的 x 數據點
+	* @param y 已知的 y 數據點
+	* @param target 需要插值的目標 x 值
+    * @return double 對應 target 的插值結果
+     * @details 這個方法實現了線性插值，接受一組已知的 x 和 y 數據點，以及一個目標 x 值。
+     * 它會找到目標 x 所在的區間，然後使用該區間的兩個點進行線性插值計算。方法中包含了基本的錯誤檢查，
+	 * 例如確保輸入數據點的大小匹配，以及避免除以零的情況（當有重複的 x 值時）。如果目標 x 超出數據範圍，則返回最後一個 y 值。
+    */
     static double lerp(const std::vector<double>& x, const std::vector<double>& y, double target);
     
+    /**
+    * @brief Cubic Spline 插值法 (單點)
+     * @param x 已知的 x 數據點
+     * @param y 已知的 y 數據點
+     * @param target 需要插值的目標 x 值
+     * @return double 對應 target 的插值結果
+      * @details 這個方法實現了三次樣條插值，接受一組已知的 x 和 y 數據點，以及一個目標 x 值。
+	  * 它會計算每個區間的三次多項式係數，然後根據目標 x 所在的區間進行插值計算。方法中包含了基本的錯誤檢查，
+    */
     static double spline(const std::vector<double>& x, const std::vector<double>& y, double target);
+
+/**
+* @brief PCHIP 插值法 (單點)
+* @param x 已知的 x 數據點
+* @param y 已知的 y 數據點
+* @param target 需要插值的目標 x 值
+* @return double 對應 target 的插值結果
+ * @details 這個方法實現了單調三次 Hermite 插值，接受一組已知的 x 和 y 數據點，以及一個目標 x 值。
+ * 它會計算每個區間的斜率，並且根據斜率來確保插值曲線在數據點之間保持單調性，避免震盪。方法中包含了基本的錯誤檢查，
+*/
     static double pchip(const std::vector<double>& x, const std::vector<double>& y, double target);
 
 
@@ -62,7 +97,6 @@ public:
     * @param num_points 採樣點數
     * @return 產生的曲線點集 (std::vector<Point>)
     */
-    
     static std::vector<Point> generateCurve(const DataSet& dataset,
         double x_min,
         double x_max,
