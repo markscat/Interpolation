@@ -3,11 +3,11 @@
 #include <string>
 class Calculus; // 前置宣告，讓 Calculator 類別知道 Calculus 的存在
 
+//#include "Calculator.h" // 包含 Calculator 的定義，讓 Calculus 可以使用它
+
 class Calculus {
 public:
-
-
-    
+       
 
     // 傳入已經存在的計算機引擎
     /**

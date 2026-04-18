@@ -54,12 +54,6 @@ public:
     static double pchip(const std::vector<double>& x, const std::vector<double>& y, double target);
 
 
-
-
-
-
-
-
     /**
     * @brief 從 DataSet 產生插值曲線 (預設使用 Lagrange
     * @param dataset 包含 X, Y 原始點的數據集

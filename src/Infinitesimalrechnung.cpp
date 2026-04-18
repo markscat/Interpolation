@@ -33,13 +33,6 @@ double Calculus::integral(double (*f)(double), double a, double b, int n) {
 
 
 
-
-
-
-
-
-
-
 #if old
 
 
