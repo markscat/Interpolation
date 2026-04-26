@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
     <ClCompile Include="src\cauver\curveexporter.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
@@ -28,6 +25,12 @@
       <Filter>來源檔案</Filter>
     </ClCompile>
     <ClCompile Include="src\Infinitesimalrechnung.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Matrix.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
   </ItemGroup>
@@ -45,6 +48,9 @@
       <Filter>資源檔</Filter>
     </ClInclude>
     <ClInclude Include="include\Infinitesimalrechnung.h">
+      <Filter>資源檔</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Matrix.h">
       <Filter>資源檔</Filter>
     </ClInclude>
   </ItemGroup>

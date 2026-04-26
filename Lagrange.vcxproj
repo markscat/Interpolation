@@ -129,6 +129,7 @@
     <ClCompile Include="src\File\File_save.cpp" />
     <ClCompile Include="src\Infinitesimalrechnung.cpp" />
     <ClCompile Include="src\Interpolation.cpp" />
+    <ClCompile Include="src\Matrix.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cauver\cauverdrawable.h" />
@@ -136,6 +137,7 @@
     <ClInclude Include="include\File\File_save.h" />
     <ClInclude Include="include\Infinitesimalrechnung.h" />
     <ClInclude Include="include\Interpolation.h" />
+    <ClInclude Include="include\Matrix.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
