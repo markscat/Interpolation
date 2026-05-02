@@ -33,6 +33,9 @@
     <ClCompile Include="src\Matrix.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="src\MonteCarloSimulator.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cauver\curveexporter.h">
@@ -51,6 +54,9 @@
       <Filter>資源檔</Filter>
     </ClInclude>
     <ClInclude Include="include\Matrix.h">
+      <Filter>資源檔</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MonteCarloSimulator.h">
       <Filter>資源檔</Filter>
     </ClInclude>
   </ItemGroup>
