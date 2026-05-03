@@ -5,13 +5,13 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="標頭檔">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="資源檔">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="來源檔案\標頭檔">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -38,26 +38,26 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\cauver\curveexporter.h">
-      <Filter>資源檔</Filter>
-    </ClInclude>
     <ClInclude Include="include\cauver\cauverdrawable.h">
-      <Filter>資源檔</Filter>
+      <Filter>來源檔案\標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="include\cauver\curveexporter.h">
+      <Filter>來源檔案\標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="include\File\File_save.h">
-      <Filter>資源檔</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Interpolation.h">
-      <Filter>資源檔</Filter>
+      <Filter>來源檔案\標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="include\Infinitesimalrechnung.h">
-      <Filter>資源檔</Filter>
+      <Filter>來源檔案\標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Interpolation.h">
+      <Filter>來源檔案\標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="include\Matrix.h">
-      <Filter>資源檔</Filter>
+      <Filter>來源檔案\標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="include\MonteCarloSimulator.h">
-      <Filter>資源檔</Filter>
+      <Filter>來源檔案\標頭檔</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
