@@ -130,6 +130,7 @@
     <ClCompile Include="src\Infinitesimalrechnung.cpp" />
     <ClCompile Include="src\Interpolation.cpp" />
     <ClCompile Include="src\Matrix.cpp" />
+    <ClCompile Include="src\MonteCarloNoise.cpp" />
     <ClCompile Include="src\MonteCarloSimulator.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +140,7 @@
     <ClInclude Include="include\Infinitesimalrechnung.h" />
     <ClInclude Include="include\Interpolation.h" />
     <ClInclude Include="include\Matrix.h" />
+    <ClInclude Include="include\MonteCarloNoise.h" />
     <ClInclude Include="include\MonteCarloSimulator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

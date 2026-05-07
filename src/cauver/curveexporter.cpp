@@ -1,5 +1,5 @@
-
 #include "../../include/cauver/curveexporter.h"
+
 //#include <QFile>
 //#include <QTextStream>
 #include <fstream>

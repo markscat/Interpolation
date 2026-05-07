@@ -36,6 +36,9 @@
     <ClCompile Include="src\MonteCarloSimulator.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="src\MonteCarloNoise.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cauver\cauverdrawable.h">
@@ -57,6 +60,9 @@
       <Filter>來源檔案\標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="include\MonteCarloSimulator.h">
+      <Filter>來源檔案\標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MonteCarloNoise.h">
       <Filter>來源檔案\標頭檔</Filter>
     </ClInclude>
   </ItemGroup>

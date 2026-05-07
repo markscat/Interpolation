@@ -123,6 +123,10 @@ void MonteCarloSimulator::computeStatistics() {
 
     if (m_hasSpec && !m_specResults.empty()) {
         int passed = std::count(m_specResults.begin(), m_specResults.end(), true);
+        /*
+1>D:\for work\temp\workshorp\PC\Qt\Interpolation\src\MonteCarloSimulator.cpp(125,20): warning C4244: '正在初始化': 將 '__int64' 轉換為 'int'，由於類型不同，可能導致資料遺失
+        *
+        */
         m_statistics.yield = static_cast<double>(passed) / m_specResults.size();
     }
     else {
